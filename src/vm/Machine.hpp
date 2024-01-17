@@ -16,12 +16,14 @@ class Machine {
     stack<long> programStack{};
     unsigned long ip{0};
     bool stopped{false};
+    void binary(Opcode const& opcode);
+    void dupStack();
+    void popStackInstr();
 
 public:
     explicit Machine(vector<Instruction>const& instructions);
     void run();
     void executeInstr(Instruction const& instr);
-    void binary(Opcode const& opcode,long n1, long n2);
     unsigned long valueIp()const;
     bool valueStop()const;
     long popStack();

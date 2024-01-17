@@ -20,7 +20,6 @@ void Machine::run() {
 void Machine::executeInstr(Instruction const &instr) {
 
     auto opcode = instr.opcode;
-    long val{};
     switch (opcode) {
         case Instructions::STOP:
             stopped = true;
@@ -30,8 +29,6 @@ void Machine::executeInstr(Instruction const &instr) {
                 std::cerr << "Immediate value missing" << std::endl;
                 return;
             }
-            val = instr.immediate.value();
-            std::cout << "PUSHED: " << val << endl;
             programStack.push(instr.immediate.value());
             break;
         case Instructions::ADD:
@@ -45,9 +42,13 @@ void Machine::executeInstr(Instruction const &instr) {
         case Instructions::EQ:
         case Instructions::NE:
         case Instructions::LTE:
-            long n2 = popStack();
-            long n1 = popStack();
-            binary(opcode, n1, n2);
+            binary(opcode);
+            break;
+        case Instructions::DUP:
+            dupStack();
+            break;
+        case Instructions::POP:
+            popStackInstr();
             break;
     }
 }
@@ -67,13 +68,25 @@ long Machine::popStack() {
     return val;
 }
 
-void Machine::binary(Instructions::Opcode const &opcode, long n1, long n2) {
+void Machine::popStackInstr() {
+    popStack();
+}
+
+void Machine::dupStack() {
+    auto top = popStack();
+    programStack.push(top);
+    programStack.push(top);
+}
+
+void Machine::binary(Instructions::Opcode const &opcode) {
+    long n2 = popStack();
+    long n1 = popStack();
     switch (opcode) {
         case Instructions::ADD:
             programStack.push(n1 + n2);
             break;
         case Instructions::SUB:
-            programStack.push(n1 - n1);
+            programStack.push(n1 - n2);
             break;
         case Instructions::MUL:
             programStack.push(n1 * n2);
@@ -102,6 +115,7 @@ void Machine::binary(Instructions::Opcode const &opcode, long n1, long n2) {
         case Instructions::NE:
             programStack.push(n1 != n2);
             break;
+
     }
 }
 

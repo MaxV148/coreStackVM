@@ -25,13 +25,15 @@ namespace Instructions{
         LTE = 10,
         EQ = 11,
         NE = 12,
+        POP = 13,
+        DUP = 14
 
 
     };
     struct Instruction{
         Opcode opcode;
         optional<long> immediate;
-        Instruction(Opcode op, optional<long> imm = std::nullopt) : opcode(op), immediate(imm) {}
+        explicit Instruction(Opcode op, optional<long> imm = std::nullopt) : opcode(op), immediate(imm) {}
     };
 }
 
