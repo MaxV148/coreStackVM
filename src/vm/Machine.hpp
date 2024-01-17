@@ -14,7 +14,6 @@ using std::vector; using std::stack; using Instructions::Instruction; using Inst
 class Machine {
     const vector<Instruction> programVec{};
     stack<long> programStack{};
-    unsigned long sp{0};
     unsigned long ip{0};
     bool stopped{false};
 
@@ -23,8 +22,10 @@ public:
     void run();
     void executeInstr(Instruction const& instr);
     void binary(Opcode const& opcode,long n1, long n2);
+    unsigned long valueIp()const;
+    bool valueStop()const;
+    long popStack();
     unsigned long advanceIP();
-    unsigned long advanceSP();
     Instruction nextInst();
 
 };
