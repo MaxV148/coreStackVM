@@ -7,29 +7,27 @@
 #include <vector>
 #include <stack>
 #include "../util/Instructions.hpp"
+#include "MachineStack.hpp"
 
 using std::vector; using std::stack; using Instructions::Instruction; using Instructions::Opcode;
 
-
 class Machine {
     const vector<Instruction> programVec{};
-    stack<long> programStack{};
+    MachineStack programStack;
     unsigned long ip{0};
     bool stopped{false};
     void binary(Opcode const& opcode);
-    void dupStack();
-    void popStackInstr();
-
 public:
     explicit Machine(vector<Instruction>const& instructions);
     void run();
     void executeInstr(Instruction const& instr);
     unsigned long valueIp()const;
     bool valueStop()const;
-    long popStack();
     unsigned long advanceIP();
     Instruction nextInst();
 
+    //only for testing
+    long popLast();
 };
 
 

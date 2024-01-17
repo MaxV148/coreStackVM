@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 5);
+        BOOST_CHECK_EQUAL(vm.popLast(), 5);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), -1);
+        BOOST_CHECK_EQUAL(vm.popLast(), -1);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 15);
+        BOOST_CHECK_EQUAL(vm.popLast(), 15);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 100);
+        BOOST_CHECK_EQUAL(vm.popLast(), 100);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 4);
+        BOOST_CHECK_EQUAL(vm.popLast(), 4);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 5);
+        BOOST_CHECK_EQUAL(vm.popLast(), 5);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 0);
+        BOOST_CHECK_EQUAL(vm.popLast(), 0);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 1);
+        BOOST_CHECK_EQUAL(vm.popLast(), 1);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 1);
+        BOOST_CHECK_EQUAL(vm.popLast(), 1);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 1);
+        BOOST_CHECK_EQUAL(vm.popLast(), 1);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 1);
+        BOOST_CHECK_EQUAL(vm.popLast(), 1);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 0);
+        BOOST_CHECK_EQUAL(vm.popLast(), 0);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 0);
+        BOOST_CHECK_EQUAL(vm.popLast(), 0);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
@@ -221,8 +221,8 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
-        BOOST_CHECK_EQUAL(vm.popStack(), 1234L);
-        BOOST_CHECK_EQUAL(vm.popStack(), 1234L);
+        BOOST_CHECK_EQUAL(vm.popLast(), 1234L);
+        BOOST_CHECK_EQUAL(vm.popLast(), 1234L);
 
     }
     BOOST_AUTO_TEST_CASE(pop)

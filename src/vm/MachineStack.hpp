@@ -4,23 +4,19 @@
 
 #ifndef CMAKE_BOOST_DEMO_MACHINESTACK_HPP
 #define CMAKE_BOOST_DEMO_MACHINESTACK_HPP
-#include <array>
+#include <stack>
 #include "../util/Instructions.hpp"
 
-using std::array; using Instructions::Instruction;
+using std::stack; using Instructions::Instruction;
 
-constexpr unsigned STACK_SIZE = 1024;
 
 class MachineStack {
-    const array<Instruction,STACK_SIZE> stack;
-    int stackPt{0};
+    stack<long> stack{};
 public:
-    Instruction popStack();
-    void pushStack();
-    int valueStackPt()const;
-
-
+    explicit MachineStack();
+    long popStack();
+    void pushStack(long value);
+    void dupStack();
 };
-
 
 #endif //CMAKE_BOOST_DEMO_MACHINESTACK_HPP

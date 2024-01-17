@@ -27,8 +27,6 @@ namespace Instructions{
         NE = 12,
         POP = 13,
         DUP = 14
-
-
     };
     struct Instruction{
         Opcode opcode;
@@ -36,8 +34,6 @@ namespace Instructions{
         explicit Instruction(Opcode op, optional<long> imm = std::nullopt) : opcode(op), immediate(imm) {}
     };
 }
-
-
 
 #endif //STACK_VM_INSTRUCTIONS_HPP
 
