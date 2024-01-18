@@ -238,4 +238,31 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
 
     }
 
+    BOOST_AUTO_TEST_CASE(jmp)
+    {
+        const vector<Instruction> prog = vector{Instruction(Opcode::JMP, optional(2L)), Instruction(Opcode::STOP),
+                                                Instruction(Opcode::JMP,optional(1L))};
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.valueIp(), 2);
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+    BOOST_AUTO_TEST_CASE(jif)
+    {
+        const vector<Instruction> prog = vector{
+            Instruction(Opcode::PUSH, optional(1L)),
+            Instruction(Opcode::JIF,optional(3L)),
+            Instruction(Opcode::POP),
+            Instruction(Opcode::PUSH, optional(0L)),
+            Instruction(Opcode::JIF,optional(2)),
+            Instruction(Opcode::STOP)
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.valueIp(), 6);
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

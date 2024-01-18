@@ -26,7 +26,9 @@ namespace Instructions{
         EQ = 11,
         NE = 12,
         POP = 13,
-        DUP = 14
+        DUP = 14,
+        JMP = 15,
+        JIF = 16,
     };
     struct Instruction{
         Opcode opcode;

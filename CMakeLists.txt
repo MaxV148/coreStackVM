@@ -32,6 +32,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 #set(SOURCE_FILES src/main.cpp $<TARGET_OBJECTS:demo_objects>)
 set(SOURCE_FILES src/main.cpp ${INC_FILES} ${SRC_FILES}
         src/vm/MachineStack.cpp
-        src/vm/MachineStack.hpp)
+        src/vm/MachineStack.hpp
+        src/vm/Stackframe.cpp
+        src/vm/Stackframe.hpp)
 add_executable(cmake_boost_demo ${SOURCE_FILES})
 target_link_libraries(cmake_boost_demo ${Boost_LIBRARIES})

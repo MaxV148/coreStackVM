@@ -49,6 +49,12 @@ void Machine::executeInstr(Instruction const &instr) {
         case Instructions::POP:
             programStack.popStack();
             break;
+        case Instructions::JMP:
+            jump(instr.immediate.value());
+            break;
+        case Instructions::JIF:
+            jumpOnTrue(instr.immediate.value());
+            break;
     }
 }
 
@@ -60,6 +66,20 @@ long Machine::popLast() {
     return programStack.popStack();
 }
 
+void Machine::jumpOnTrue(long imm) {
+    auto val = programStack.popStack();
+    if(val == 1){
+        ip = imm;
+    }
+}
+
+void Machine::jump(long val) {
+    setIp(val);
+}
+
+void Machine::setIp(long val) {
+    ip = val;
+}
 bool Machine::valueStop() const {
     return stopped;
 }

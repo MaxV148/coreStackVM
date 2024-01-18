@@ -14,9 +14,12 @@ using std::vector; using std::stack; using Instructions::Instruction; using Inst
 class Machine {
     const vector<Instruction> programVec{};
     MachineStack programStack;
-    unsigned long ip{0};
+    long ip{0};
     bool stopped{false};
     void binary(Opcode const& opcode);
+    void setIp(long val);
+    void jump(long val);
+    void jumpOnTrue(long imm);
 public:
     explicit Machine(vector<Instruction>const& instructions);
     void run();
