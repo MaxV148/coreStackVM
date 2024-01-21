@@ -55,6 +55,12 @@ void Machine::executeInstr(Instruction const &instr) {
         case Instructions::JIF:
             jumpOnTrue(instr.immediate.value());
             break;
+        case Instructions::LOAD:
+            loadVar(instr.immediate.value());
+            break;
+        case Instructions::STORE:
+            storeVar(instr.immediate.value());
+            break;
     }
 }
 
@@ -71,6 +77,16 @@ void Machine::jumpOnTrue(long imm) {
     if(val == 1){
         ip = imm;
     }
+}
+
+void Machine::loadVar(long imm) {
+    // TODO: fix Narrowing conversion
+    programStack.pushStack(frame.getVariable(imm));
+}
+
+void Machine::storeVar(long imm) {
+    // TODO: fix Narrowing conversion
+    frame.setVariable(imm,programStack.popStack());
 }
 
 void Machine::jump(long val) {

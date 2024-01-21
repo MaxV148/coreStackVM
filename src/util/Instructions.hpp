@@ -29,6 +29,8 @@ namespace Instructions{
         DUP = 14,
         JMP = 15,
         JIF = 16,
+        LOAD = 17,
+        STORE = 18
     };
     struct Instruction{
         Opcode opcode;

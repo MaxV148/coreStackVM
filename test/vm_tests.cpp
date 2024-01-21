@@ -265,4 +265,38 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
+/*    BOOST_AUTO_TEST_CASE(load_var_not_initialized, *utf::disabled())
+    {
+        const vector<Instruction> prog = vector{
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::STOP)
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
+        BOOST_CHECK_EQUAL(vm.popLast(), 0);
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }*/
+
+    BOOST_AUTO_TEST_CASE(load_var_initialized)
+    {
+        const vector<Instruction> prog = vector{
+                Instruction(Opcode::PUSH, optional(5L)),
+                Instruction(Opcode::STORE, optional(0L)),
+                Instruction(Opcode::PUSH, optional(780L)),
+                Instruction(Opcode::STORE, optional(1L)),
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::LOAD, optional(1L)),
+                Instruction(Opcode::STOP)
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
+        BOOST_CHECK_EQUAL(vm.popLast(), 780);
+        BOOST_CHECK_EQUAL(vm.popLast(), 5);
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

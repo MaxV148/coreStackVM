@@ -7,6 +7,7 @@
 #include <vector>
 #include <stack>
 #include "../util/Instructions.hpp"
+#include "./Stackframe.hpp"
 #include "MachineStack.hpp"
 
 using std::vector; using std::stack; using Instructions::Instruction; using Instructions::Opcode;
@@ -14,9 +15,12 @@ using std::vector; using std::stack; using Instructions::Instruction; using Inst
 class Machine {
     const vector<Instruction> programVec{};
     MachineStack programStack;
+    Stackframe frame{};
     long ip{0};
     bool stopped{false};
     void binary(Opcode const& opcode);
+    void loadVar(long imm);
+    void storeVar(long imm);
     void setIp(long val);
     void jump(long val);
     void jumpOnTrue(long imm);
