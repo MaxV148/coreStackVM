@@ -30,7 +30,9 @@ namespace Instructions{
         JMP = 15,
         JIF = 16,
         LOAD = 17,
-        STORE = 18
+        STORE = 18,
+        CALL = 19,
+        RET = 20,
     };
     struct Instruction{
         Opcode opcode;

@@ -15,7 +15,7 @@ using std::vector; using std::stack; using Instructions::Instruction; using Inst
 class Machine {
     const vector<Instruction> programVec{};
     MachineStack programStack;
-    Stackframe frame{};
+    stack<Stackframe> frames;
     long ip{0};
     bool stopped{false};
     void binary(Opcode const& opcode);
@@ -24,6 +24,8 @@ class Machine {
     void setIp(long val);
     void jump(long val);
     void jumpOnTrue(long imm);
+    Stackframe& getCurrentframe();
+    void callFunction(long imm);
 public:
     explicit Machine(vector<Instruction>const& instructions);
     void run();

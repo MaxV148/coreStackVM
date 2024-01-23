@@ -8,7 +8,9 @@
 using std::cout;
 using std::endl;
 
-Machine::Machine(vector<Instructions::Instruction> const &instructions) : programVec(instructions), programStack() {}
+Machine::Machine(vector<Instructions::Instruction> const &instructions) : programVec(instructions), programStack() {
+    frames.push(Stackframe{0});//initial Stackframe
+}
 
 void Machine::run() {
     while (!stopped) {
@@ -64,6 +66,16 @@ void Machine::executeInstr(Instruction const &instr) {
     }
 }
 
+void Machine::callFunction(long imm) {
+    auto newFrame = Stackframe(ip);
+    frames.push(newFrame);
+    ip = imm;
+
+}
+
+Stackframe &Machine::getCurrentframe() {
+    return frames.top();
+}
 unsigned long Machine::valueIp() const {
     return ip;
 }
@@ -81,12 +93,14 @@ void Machine::jumpOnTrue(long imm) {
 
 void Machine::loadVar(long imm) {
     // TODO: fix Narrowing conversion
-    programStack.pushStack(frame.getVariable(imm));
+    auto& currFrame = getCurrentframe();
+    programStack.pushStack(currFrame.getVariable(imm));
 }
 
 void Machine::storeVar(long imm) {
     // TODO: fix Narrowing conversion
-    frame.setVariable(imm,programStack.popStack());
+    auto& currFrame = getCurrentframe();
+    currFrame.setVariable(imm,programStack.popStack());
 }
 
 void Machine::jump(long val) {
