@@ -350,7 +350,6 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
                 //main
                 Instruction(Opcode::PUSH, optional(0L)),//1. arg
                 Instruction(Opcode::CALL, optional(3L)), // call rec(0);
-                //Instruction(Opcode::PUSHR),
                 Instruction(Opcode::STOP),
                 //rec()
                 Instruction(Opcode::STORE, optional(0L)),
@@ -363,12 +362,9 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
                 Instruction(Opcode::PUSH, optional(1L)),
                 Instruction(Opcode::ADD),
                 Instruction(Opcode::CALL, optional(3L)), // call rec(arg+1);
-                //Instruction(Opcode::PUSHR),
-                //Instruction(Opcode::POPR),
                 Instruction(Opcode::JMP,optional(14L)),
                 //if true path
                 Instruction(Opcode::LOAD, optional(0L)),
-                //Instruction(Opcode::POPR),
                 Instruction(Opcode::RET),
         };
         auto vm = Machine{prog};
@@ -380,44 +376,99 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
-    BOOST_AUTO_TEST_CASE(iteration)
+    BOOST_AUTO_TEST_CASE(while_simple)
     {
         /*
-         * fn factorial(Integer n){
-         *  var r = 1;
-         *  while (n > 0) {
-         *      r = r * n;
-         *      n = n - 1;
-         *  }
-         *  return r;
+         * int total = 0;
+         * int a = 6;
+         * int b = 4;
+         * while (b >= 1) {
+         *  total += a;
+         *  --b;
          * }
-         * rec(0);
+         *
          */
         const vector<Instruction> prog = vector{
-                Instruction(Opcode::PUSH, optional(5L)),//1. arg
-                Instruction(Opcode::CALL, optional(3L)), // call factorial(5);
-                Instruction(Opcode::STOP),
-                //rec()
-                Instruction(Opcode::STORE, optional(0L)),
-                Instruction(Opcode::LOAD, optional(0L)),
-                Instruction(Opcode::PUSH, optional(2L)),
-                Instruction(Opcode::EQ),
-                Instruction(Opcode::JIF,optional(12L)),
-                Instruction(Opcode::LOAD, optional(0L)),
-                Instruction(Opcode::PUSH, optional(1L)),
-                Instruction(Opcode::ADD),
-                Instruction(Opcode::CALL, optional(3L)), // call rec(5);
-                //else path
-                Instruction(Opcode::LOAD, optional(0L)),
-                Instruction(Opcode::RET),
+            //a = 6
+            Instruction(Opcode::PUSH, optional(6L)),
+            Instruction(Opcode::STORE, optional(0L)),
+            //b = 4
+            Instruction(Opcode::PUSH, optional(4L)),
+            Instruction(Opcode::STORE,optional(1L)),
+            //total = 0;
+            Instruction(Opcode::PUSH, optional(0L)),
+            Instruction(Opcode::STORE,optional(2L)),
+            //while
+            Instruction(Opcode::LOAD, optional(1L)),
+            Instruction(Opcode::PUSH, optional(1L)),
+            Instruction(Opcode::GTE),
+            Instruction(Opcode::NOT),
+            Instruction(Opcode::JIF,optional(20L)),
+            //inner loop
+            Instruction(Instructions::LOAD,optional(0L)),
+            Instruction(Instructions::LOAD,optional(2L)),
+            Instruction(Instructions::ADD),
+            Instruction(Instructions::STORE,optional(2L)),
+
+            Instruction(Instructions::LOAD,optional(1L)),
+            Instruction(Instructions::PUSH,optional(1L)),
+            Instruction(Instructions::SUB),
+            Instruction(Instructions::STORE,optional(1L)),
+            Instruction(Instructions::JMP,optional(6L)),
+
+            Instruction(Instructions::LOAD,optional(2L)),
+            Instruction(Instructions::STOP)
+
+
         };
         auto vm = Machine{prog};
         BOOST_CHECK_EQUAL(vm.valueIp(),0);
         vm.run();
-        BOOST_CHECK_EQUAL(vm.popLast(), 5);
+        BOOST_CHECK_EQUAL(vm.popLast(), 24);
 
         //BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
+
+
+//    BOOST_AUTO_TEST_CASE(iteration)
+//    {
+//        /*
+//         * fn factorial(Integer n){
+//         *  var r = 1;
+//         *  while (n > 0) {
+//         *      r = r * n;
+//         *      n = n - 1;
+//         *  }
+//         *  return r;
+//         * }
+//         * rec(0);
+//         */
+//        const vector<Instruction> prog = vector{
+//                Instruction(Opcode::PUSH, optional(5L)),//1. arg
+//                Instruction(Opcode::CALL, optional(3L)), // call factorial(5);
+//                Instruction(Opcode::STOP),
+//                //rec()
+//                Instruction(Opcode::STORE, optional(0L)),
+//                Instruction(Opcode::LOAD, optional(0L)),
+//                Instruction(Opcode::PUSH, optional(2L)),
+//                Instruction(Opcode::EQ),
+//                Instruction(Opcode::JIF,optional(12L)),
+//                Instruction(Opcode::LOAD, optional(0L)),
+//                Instruction(Opcode::PUSH, optional(1L)),
+//                Instruction(Opcode::ADD),
+//                Instruction(Opcode::CALL, optional(3L)), // call rec(5);
+//                //else path
+//                Instruction(Opcode::LOAD, optional(0L)),
+//                Instruction(Opcode::RET),
+//        };
+//        auto vm = Machine{prog};
+//        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+//        vm.run();
+//        BOOST_CHECK_EQUAL(vm.popLast(), 5);
+//
+//        //BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
+//        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+//    }
 
 BOOST_AUTO_TEST_SUITE_END()

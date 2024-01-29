@@ -19,6 +19,7 @@ class Machine {
     long ip{0};
     bool stopped{false};
     void binary(Opcode const& opcode);
+    void notInstr();
     void loadVar(long imm);
     void storeVar(long imm);
     void setIp(long val);

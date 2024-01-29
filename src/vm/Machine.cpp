@@ -69,6 +69,9 @@ void Machine::executeInstr(Instruction const &instr) {
         case Instructions::RET:
             returnFromFunction();
             break;
+        case Instructions::NOT:
+            notInstr();
+            break;
 
     }
 }
@@ -124,6 +127,15 @@ void Machine::setIp(long val) {
 }
 bool Machine::valueStop() const {
     return stopped;
+}
+
+void Machine::notInstr() {
+    auto val = programStack.popStack();
+    if (val == 0){
+        programStack.pushStack(1);
+    }else{
+        programStack.pushStack(0);
+    }
 }
 
 

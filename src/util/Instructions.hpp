@@ -33,6 +33,7 @@ namespace Instructions{
         STORE = 18,
         CALL = 19,
         RET = 20,
+        NOT = 21
     };
     struct Instruction{
         Opcode opcode;
