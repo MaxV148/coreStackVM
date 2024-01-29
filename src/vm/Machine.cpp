@@ -63,6 +63,13 @@ void Machine::executeInstr(Instruction const &instr) {
         case Instructions::STORE:
             storeVar(instr.immediate.value());
             break;
+        case Instructions::CALL:
+            callFunction(instr.immediate.value());
+            break;
+        case Instructions::RET:
+            returnFromFunction();
+            break;
+
     }
 }
 
@@ -70,7 +77,12 @@ void Machine::callFunction(long imm) {
     auto newFrame = Stackframe(ip);
     frames.push(newFrame);
     ip = imm;
+}
 
+void Machine::returnFromFunction() {
+    auto retAddress = getCurrentframe().getReturnAddress();
+    frames.pop();
+    ip = retAddress;
 }
 
 Stackframe &Machine::getCurrentframe() {

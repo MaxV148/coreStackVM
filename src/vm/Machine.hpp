@@ -26,6 +26,7 @@ class Machine {
     void jumpOnTrue(long imm);
     Stackframe& getCurrentframe();
     void callFunction(long imm);
+    void returnFromFunction();
 public:
     explicit Machine(vector<Instruction>const& instructions);
     void run();

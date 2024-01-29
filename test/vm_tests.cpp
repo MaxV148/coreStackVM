@@ -298,5 +298,126 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         BOOST_CHECK_EQUAL(vm.popLast(), 5);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
+    BOOST_AUTO_TEST_CASE(max_a_b)
+    {
+        /*
+         * int max(int a, int b) {
+         *     if (a > b) {
+         *         return a;
+         *     } else {
+         *         return b;
+         *     }
+         * }
+         */
+        const vector<Instruction> prog = vector{
+                Instruction(Opcode::PUSH, optional(6L)),//1. arg
+                Instruction(Opcode::PUSH, optional(4L)), // 2. arg
+                Instruction(Opcode::CALL, optional(4L)), // call max(6,4);
+                Instruction(Opcode::STOP),
+                //max()
+                Instruction(Opcode::STORE, optional(1L)),
+                Instruction(Opcode::STORE, optional(0L)),
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::LOAD, optional(1L)),
+                Instruction(Opcode::GT),
+                Instruction(Opcode::JIF,optional(12L)),
+                Instruction(Opcode::LOAD, optional(1L)),
+                Instruction(Opcode::RET),
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::RET),
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.popLast(), 6);
+
+        //BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+    BOOST_AUTO_TEST_CASE(recusion)
+    {
+        /*
+         * int rec(int a) {
+         *     if (a == 50) {
+         *         return a;
+         *     } else {
+         *         return rec(a+1);
+         *     }
+         * }
+         * rec(0);
+         */
+        const vector<Instruction> prog = vector{
+                //main
+                Instruction(Opcode::PUSH, optional(0L)),//1. arg
+                Instruction(Opcode::CALL, optional(3L)), // call rec(0);
+                //Instruction(Opcode::PUSHR),
+                Instruction(Opcode::STOP),
+                //rec()
+                Instruction(Opcode::STORE, optional(0L)),
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::PUSH, optional(50L)),
+                Instruction(Opcode::EQ),
+                Instruction(Opcode::JIF,optional(13L)),
+                //else path
+                Instruction(Opcode::LOAD,  optional(0L)),
+                Instruction(Opcode::PUSH, optional(1L)),
+                Instruction(Opcode::ADD),
+                Instruction(Opcode::CALL, optional(3L)), // call rec(arg+1);
+                //Instruction(Opcode::PUSHR),
+                //Instruction(Opcode::POPR),
+                Instruction(Opcode::JMP,optional(14L)),
+                //if true path
+                Instruction(Opcode::LOAD, optional(0L)),
+                //Instruction(Opcode::POPR),
+                Instruction(Opcode::RET),
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.popLast(), 50);
+
+        //BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+
+    BOOST_AUTO_TEST_CASE(iteration)
+    {
+        /*
+         * fn factorial(Integer n){
+         *  var r = 1;
+         *  while (n > 0) {
+         *      r = r * n;
+         *      n = n - 1;
+         *  }
+         *  return r;
+         * }
+         * rec(0);
+         */
+        const vector<Instruction> prog = vector{
+                Instruction(Opcode::PUSH, optional(5L)),//1. arg
+                Instruction(Opcode::CALL, optional(3L)), // call factorial(5);
+                Instruction(Opcode::STOP),
+                //rec()
+                Instruction(Opcode::STORE, optional(0L)),
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::PUSH, optional(2L)),
+                Instruction(Opcode::EQ),
+                Instruction(Opcode::JIF,optional(12L)),
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::PUSH, optional(1L)),
+                Instruction(Opcode::ADD),
+                Instruction(Opcode::CALL, optional(3L)), // call rec(5);
+                //else path
+                Instruction(Opcode::LOAD, optional(0L)),
+                Instruction(Opcode::RET),
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.popLast(), 5);
+
+        //BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
 
 BOOST_AUTO_TEST_SUITE_END()
