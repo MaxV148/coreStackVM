@@ -72,7 +72,21 @@ void Machine::executeInstr(Instruction const &instr) {
         case Instructions::NOT:
             notInstr();
             break;
-
+        case Instructions::NEW_LIST:
+            newList(instr.immediate.value());
+            break;
+        case Instructions::PUSH_LIST:
+            pushList(instr.immediate.value());
+            break;
+        case Instructions::LEN_LIST:
+            getLenList(instr.immediate.value());
+            break;
+        case Instructions::SET_ELM_LIST:
+            setElemList(instr.immediate.value());
+            break;
+        case Instructions::GET_ELM_LIST:
+            getElemAt(instr.immediate.value());
+            break;
     }
 }
 
@@ -91,6 +105,7 @@ void Machine::returnFromFunction() {
 Stackframe &Machine::getCurrentframe() {
     return frames.top();
 }
+
 unsigned long Machine::valueIp() const {
     return ip;
 }
@@ -101,21 +116,21 @@ long Machine::popLast() {
 
 void Machine::jumpOnTrue(long imm) {
     auto val = programStack.popStack();
-    if(val == 1){
+    if (val == 1) {
         ip = imm;
     }
 }
 
 void Machine::loadVar(long imm) {
     // TODO: fix Narrowing conversion
-    auto& currFrame = getCurrentframe();
+    auto &currFrame = getCurrentframe();
     programStack.pushStack(currFrame.getVariable(imm));
 }
 
 void Machine::storeVar(long imm) {
     // TODO: fix Narrowing conversion
-    auto& currFrame = getCurrentframe();
-    currFrame.setVariable(imm,programStack.popStack());
+    auto &currFrame = getCurrentframe();
+    currFrame.setVariable(imm, programStack.popStack());
 }
 
 void Machine::jump(long val) {
@@ -125,15 +140,16 @@ void Machine::jump(long val) {
 void Machine::setIp(long val) {
     ip = val;
 }
+
 bool Machine::valueStop() const {
     return stopped;
 }
 
 void Machine::notInstr() {
     auto val = programStack.popStack();
-    if (val == 0){
+    if (val == 0) {
         programStack.pushStack(1);
-    }else{
+    } else {
         programStack.pushStack(0);
     }
 }
@@ -187,6 +203,40 @@ Instruction Machine::nextInst() {
     auto next = programVec.at(ip);
     advanceIP();
     return next;
+}
+
+void Machine::newList(long idxList) {
+    auto newList = VMList();
+    auto initAmount = programStack.popStack();
+    for (int i = 0; i < initAmount; ++i) {
+        newList.add(programStack.popStack());
+    }
+    lists[idxList] = newList;
+}
+
+void Machine::pushList(long idxList) {
+    auto val = programStack.popStack();
+    lists[idxList].add(val);
+
+}
+
+
+void Machine::getLenList(long idxList) {
+    auto len = lists[idxList].size();
+    programStack.pushStack(len);
+}
+
+void Machine::setElemList(long idxList) {
+    auto idxInList = programStack.popStack();
+    auto val = programStack.popStack();
+    lists[idxList].set(idxInList, val);
+
+}
+
+void Machine::getElemAt(long idxList) {
+    auto idxInList = programStack.popStack();
+    auto val = lists[idxList].get(idxInList);
+    programStack.pushStack(val);
 }
 
 

@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         const vector<Instruction> prog = vector{Instruction(Opcode::PUSH, optional(1234L)), Instruction(Opcode::DUP),
                                                 Instruction(Opcode::STOP)};
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
@@ -225,12 +225,13 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         BOOST_CHECK_EQUAL(vm.popLast(), 1234L);
 
     }
+
     BOOST_AUTO_TEST_CASE(pop)
     {
         const vector<Instruction> prog = vector{Instruction(Opcode::PUSH, optional(1234L)), Instruction(Opcode::POP),
                                                 Instruction(Opcode::STOP)};
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
@@ -241,25 +242,26 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
     BOOST_AUTO_TEST_CASE(jmp)
     {
         const vector<Instruction> prog = vector{Instruction(Opcode::JMP, optional(2L)), Instruction(Opcode::STOP),
-                                                Instruction(Opcode::JMP,optional(1L))};
+                                                Instruction(Opcode::JMP, optional(1L))};
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), 2);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
+
     BOOST_AUTO_TEST_CASE(jif)
     {
         const vector<Instruction> prog = vector{
-            Instruction(Opcode::PUSH, optional(1L)),
-            Instruction(Opcode::JIF,optional(3L)),
-            Instruction(Opcode::POP),
-            Instruction(Opcode::PUSH, optional(0L)),
-            Instruction(Opcode::JIF,optional(2)),
-            Instruction(Opcode::STOP)
+                Instruction(Opcode::PUSH, optional(1L)),
+                Instruction(Opcode::JIF, optional(3L)),
+                Instruction(Opcode::POP),
+                Instruction(Opcode::PUSH, optional(0L)),
+                Instruction(Opcode::JIF, optional(2)),
+                Instruction(Opcode::STOP)
         };
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), 6);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
@@ -291,13 +293,14 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
                 Instruction(Opcode::STOP)
         };
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.popLast(), 780);
         BOOST_CHECK_EQUAL(vm.popLast(), 5);
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
+
     BOOST_AUTO_TEST_CASE(max_a_b)
     {
         /*
@@ -320,20 +323,21 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
                 Instruction(Opcode::LOAD, optional(0L)),
                 Instruction(Opcode::LOAD, optional(1L)),
                 Instruction(Opcode::GT),
-                Instruction(Opcode::JIF,optional(12L)),
+                Instruction(Opcode::JIF, optional(12L)),
                 Instruction(Opcode::LOAD, optional(1L)),
                 Instruction(Opcode::RET),
                 Instruction(Opcode::LOAD, optional(0L)),
                 Instruction(Opcode::RET),
         };
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.popLast(), 6);
 
         //BOOST_CHECK_EQUAL(vm.valueIp(), prog.size());
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
+
     BOOST_AUTO_TEST_CASE(recusion)
     {
         /*
@@ -356,19 +360,19 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
                 Instruction(Opcode::LOAD, optional(0L)),
                 Instruction(Opcode::PUSH, optional(50L)),
                 Instruction(Opcode::EQ),
-                Instruction(Opcode::JIF,optional(13L)),
+                Instruction(Opcode::JIF, optional(13L)),
                 //else path
-                Instruction(Opcode::LOAD,  optional(0L)),
+                Instruction(Opcode::LOAD, optional(0L)),
                 Instruction(Opcode::PUSH, optional(1L)),
                 Instruction(Opcode::ADD),
                 Instruction(Opcode::CALL, optional(3L)), // call rec(arg+1);
-                Instruction(Opcode::JMP,optional(14L)),
+                Instruction(Opcode::JMP, optional(14L)),
                 //if true path
                 Instruction(Opcode::LOAD, optional(0L)),
                 Instruction(Opcode::RET),
         };
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.popLast(), 50);
 
@@ -389,40 +393,40 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
          *
          */
         const vector<Instruction> prog = vector{
-            //a = 6
-            Instruction(Opcode::PUSH, optional(6L)),
-            Instruction(Opcode::STORE, optional(0L)),
-            //b = 4
-            Instruction(Opcode::PUSH, optional(4L)),
-            Instruction(Opcode::STORE,optional(1L)),
-            //total = 0;
-            Instruction(Opcode::PUSH, optional(0L)),
-            Instruction(Opcode::STORE,optional(2L)),
-            //while
-            Instruction(Opcode::LOAD, optional(1L)),
-            Instruction(Opcode::PUSH, optional(1L)),
-            Instruction(Opcode::GTE),
-            Instruction(Opcode::NOT),
-            Instruction(Opcode::JIF,optional(20L)),
-            //inner loop
-            Instruction(Instructions::LOAD,optional(0L)),
-            Instruction(Instructions::LOAD,optional(2L)),
-            Instruction(Instructions::ADD),
-            Instruction(Instructions::STORE,optional(2L)),
+                //a = 6
+                Instruction(Opcode::PUSH, optional(6L)),
+                Instruction(Opcode::STORE, optional(0L)),
+                //b = 4
+                Instruction(Opcode::PUSH, optional(4L)),
+                Instruction(Opcode::STORE, optional(1L)),
+                //total = 0;
+                Instruction(Opcode::PUSH, optional(0L)),
+                Instruction(Opcode::STORE, optional(2L)),
+                //while
+                Instruction(Opcode::LOAD, optional(1L)),
+                Instruction(Opcode::PUSH, optional(1L)),
+                Instruction(Opcode::GTE),
+                Instruction(Opcode::NOT),
+                Instruction(Opcode::JIF, optional(20L)),
+                //inner loop
+                Instruction(Instructions::LOAD, optional(0L)),
+                Instruction(Instructions::LOAD, optional(2L)),
+                Instruction(Instructions::ADD),
+                Instruction(Instructions::STORE, optional(2L)),
 
-            Instruction(Instructions::LOAD,optional(1L)),
-            Instruction(Instructions::PUSH,optional(1L)),
-            Instruction(Instructions::SUB),
-            Instruction(Instructions::STORE,optional(1L)),
-            Instruction(Instructions::JMP,optional(6L)),
+                Instruction(Instructions::LOAD, optional(1L)),
+                Instruction(Instructions::PUSH, optional(1L)),
+                Instruction(Instructions::SUB),
+                Instruction(Instructions::STORE, optional(1L)),
+                Instruction(Instructions::JMP, optional(6L)),
 
-            Instruction(Instructions::LOAD,optional(2L)),
-            Instruction(Instructions::STOP)
+                Instruction(Instructions::LOAD, optional(2L)),
+                Instruction(Instructions::STOP)
 
 
         };
         auto vm = Machine{prog};
-        BOOST_CHECK_EQUAL(vm.valueIp(),0);
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
         vm.run();
         BOOST_CHECK_EQUAL(vm.popLast(), 24);
 
@@ -430,6 +434,77 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
         BOOST_CHECK_EQUAL(vm.valueStop(), true);
     }
 
+    BOOST_AUTO_TEST_CASE(array_test) {
+        /*
+         * var arr = new Array(1,2,3);
+         * var sum = arr[0] + arr[1] + arr[2]
+         *
+         */
+        const vector<Instruction> prog = {
+
+                Instruction(Opcode::PUSH, optional(3L)),
+                Instruction(Opcode::PUSH, optional(2L)),
+                Instruction(Opcode::PUSH, optional(1L)),
+
+                Instruction(Opcode::PUSH, optional(3L)),
+                Instruction(Opcode::NEW_LIST, optional(0L)),
+
+                Instruction(Opcode::PUSH, optional(0L)),//idx
+                Instruction(Opcode::GET_ELM_LIST, optional(0L)),//list index
+
+                Instruction(Opcode::PUSH, optional(1L)),//idx
+                Instruction(Opcode::GET_ELM_LIST, optional(0L)),//list index
+
+                Instruction(Opcode::ADD),
+
+                Instruction(Opcode::PUSH, optional(2L)),//idx
+                Instruction(Opcode::GET_ELM_LIST, optional(0L)),//list index
+
+                Instruction(Opcode::ADD),
+
+                Instruction(Opcode::STOP)
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.popLast(), 6);
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+
+    BOOST_AUTO_TEST_CASE(list_append) {
+        /*
+         * var arr = new List();
+         * arr.append(1);
+         *
+         */
+        const vector<Instruction> prog = {
+                Instruction(Opcode::PUSH, optional(0L)),//init size
+                Instruction(Opcode::NEW_LIST, optional(0L)),
+
+                Instruction(Opcode::PUSH, optional(1L)),//idx
+                Instruction(Opcode::PUSH_LIST, optional(0L)),//list index
+
+                Instruction(Opcode::PUSH, optional(0L)),//idx
+                Instruction(Opcode::GET_ELM_LIST, optional(0L)),//list index
+
+                Instruction(Opcode::STOP)
+        };
+        auto vm = Machine{prog};
+        BOOST_CHECK_EQUAL(vm.valueIp(), 0);
+        vm.run();
+        BOOST_CHECK_EQUAL(vm.popLast(), 1);
+        BOOST_CHECK_EQUAL(vm.valueStop(), true);
+    }
+
+
+    /*
+     * class Test{
+     *  var i = 0;
+     *  var list = new List();
+     * }
+     * var t = new Test();
+     * t.list.append(1);
+     */
 
 //    BOOST_AUTO_TEST_CASE(iteration)
 //    {

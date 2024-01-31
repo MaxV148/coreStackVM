@@ -33,7 +33,13 @@ namespace Instructions{
         STORE = 18,
         CALL = 19,
         RET = 20,
-        NOT = 21
+        NOT = 21,
+        NEW_LIST = 22,
+        PUSH_LIST = 23,
+        POP_LIST = 24,
+        LEN_LIST = 25,
+        SET_ELM_LIST = 27,
+        GET_ELM_LIST = 28
     };
     struct Instruction{
         Opcode opcode;
