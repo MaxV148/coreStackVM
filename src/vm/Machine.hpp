@@ -37,6 +37,9 @@ class Machine {
     void getLenList(long idxList);
     void setElemList(long idxList);
     void getElemAt(long idxList);
+    void writeOut();
+    void readIn();
+
 
 public:
     explicit Machine(vector<Instruction>const& instructions);

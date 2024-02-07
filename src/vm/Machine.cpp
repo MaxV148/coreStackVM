@@ -90,6 +90,16 @@ void Machine::executeInstr(Instruction const &instr) {
     }
 }
 
+void Machine::writeOut() {
+    auto val = programStack.popStack();
+    std::cout << val << std::endl;
+}
+
+
+void Machine::readIn() {
+
+}
+
 void Machine::callFunction(long imm) {
     auto newFrame = Stackframe(ip);
     frames.push(newFrame);

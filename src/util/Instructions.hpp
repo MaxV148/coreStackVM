@@ -39,7 +39,9 @@ namespace Instructions{
         POP_LIST = 24,
         LEN_LIST = 25,
         SET_ELM_LIST = 27,
-        GET_ELM_LIST = 28
+        GET_ELM_LIST = 28,
+        WRITE_OUT = 29,
+        READ_IN = 30
     };
     struct Instruction{
         Opcode opcode;
