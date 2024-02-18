@@ -7,6 +7,7 @@
 #include <iostream>
 #include "vm/CSTyp.hpp"
 #include <string>
+#include <vector>
 #include <boost/multiprecision/cpp_int.hpp>
 using boost::multiprecision::cpp_int;
 
@@ -17,9 +18,11 @@ using std::string;
 
 int main(){
     string str = "hello"; // std::string
-
+    vector<std::unique_ptr<CSObject>> vec;
 
     cpp_int o = cpp_int("3342342342343243243244");
+
+
 
 
 

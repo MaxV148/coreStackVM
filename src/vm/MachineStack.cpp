@@ -3,13 +3,13 @@
 
 MachineStack::MachineStack() = default;
 
-long MachineStack::popStack() {
+CSObject* MachineStack::popStack() {
     auto val = stack.top();
     stack.pop();
     return val;
 }
 
-void MachineStack::pushStack(long value) {
+void MachineStack::pushStack(CSObject* value) {
     stack.push(value);
 }
 

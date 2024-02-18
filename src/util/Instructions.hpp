@@ -6,12 +6,13 @@
 #define STACK_VM_INSTRUCTIONS_HPP
 
 #include <optional>
+#include "../vm/CSObject.hpp"
 
 
 using std::optional;
 
-namespace Instructions{
-    enum Opcode{
+namespace Instructions {
+    enum Opcode {
         STOP = 0,
         PUSH = 1,
         ADD = 2,
@@ -43,10 +44,14 @@ namespace Instructions{
         WRITE_OUT = 29,
         READ_IN = 30
     };
-    struct Instruction{
+
+    struct Instruction {
         Opcode opcode;
-        optional<long> immediate;
-        explicit Instruction(Opcode op, optional<long> imm = std::nullopt) : opcode(op), immediate(imm) {}
+        optional<long> idx;
+        optional<CSObject> value;
+
+        explicit Instruction(Opcode op, optional<long> idx = std::nullopt, optional<CSObject> value = std::nullopt)
+                : opcode(op), idx(idx), value(value) {}
     };
 }
 

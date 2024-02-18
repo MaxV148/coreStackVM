@@ -11,11 +11,11 @@ using std::stack; using Instructions::Instruction;
 
 
 class MachineStack {
-    stack<long> stack{};
+    stack<CSObject*> stack{};
 public:
     explicit MachineStack();
-    long popStack();
-    void pushStack(long value);
+    CSObject* popStack();
+    void pushStack(CSObject* value);
     void dupStack();
 };
 

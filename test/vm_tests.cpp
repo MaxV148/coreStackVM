@@ -1,16 +1,19 @@
-#ifdef STAND_ALONE
-#   define BOOST_TEST_MODULE DemoTests
-#endif
 
 #include <boost/test/unit_test.hpp>
 
 #include "../src/vm/Machine.hpp"
+#include "../src/vm/CSTyp.hpp"
 #include <vector>
 #include <optional>
+#include <boost/multiprecision/cpp_int.hpp>
 
-
+using CSTypes::CSInteger;
+using CSTypes::CSString;
+using CSTypes::CSDouble;
 using std::vector;
 using std::optional;
+using std::nullopt;
+using boost::multiprecision::cpp_int;
 
 BOOST_AUTO_TEST_SUITE(vm_tests)
 
@@ -158,8 +161,8 @@ BOOST_AUTO_TEST_SUITE(vm_tests)
 
     BOOST_AUTO_TEST_CASE(vm_lt)
     {
-        const vector<Instruction> prog = vector{Instruction(Opcode::PUSH, optional(1234L)),
-                                                Instruction(Opcode::PUSH, optional(5655L)),
+        const vector<Instruction> prog = vector{Instruction(Opcode::PUSH, nullopt,optional(CSInteger(cpp_int("2324")))),
+                                                Instruction(Opcode::PUSH, nullopt,optional(CSInteger(cpp_int("846586946514684")))),
                                                 Instruction(Opcode::LT), Instruction(Opcode::STOP)};
         auto vm = Machine(prog);
         BOOST_CHECK_EQUAL(vm.valueIp(), 0);

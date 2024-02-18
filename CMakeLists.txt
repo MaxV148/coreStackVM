@@ -42,6 +42,8 @@ set(SOURCE_FILES src/main.cpp ${INC_FILES} ${SRC_FILES}
         src/vm/CSObject.cpp
         src/vm/CSObject.hpp
         src/vm/CSTyp.cpp
-        src/vm/CSTyp.hpp)
+        src/vm/CSTyp.hpp
+        "../../../Library/Application Support/JetBrains/CLion2023.3/scratches/Test.cpp"
+        "../../../Library/Application Support/JetBrains/CLion2023.3/scratches/Test.hpp")
 add_executable(cmake_boost_demo ${SOURCE_FILES})
 target_link_libraries(cmake_boost_demo ${Boost_LIBRARIES})

@@ -3,12 +3,13 @@
 //
 
 #include "Machine.hpp"
+#include "CSTyp.hpp"
 #include <iostream>
 
 using std::cout;
 using std::endl;
 
-Machine::Machine(vector<Instructions::Instruction> const &instructions) : programVec(instructions), programStack() {
+Machine::Machine(vector<Instructions::Instruction*> const &instructions) : programVec(instructions), programStack() {
     frames.push(Stackframe{0});//initial Stackframe
 }
 
@@ -26,11 +27,11 @@ void Machine::executeInstr(Instruction const &instr) {
             stopped = true;
             return;
         case Instructions::PUSH:
-            if (!instr.immediate.has_value()) {
+            if (!instr.value.has_value()) {
                 std::cerr << "Immediate value missing" << std::endl;
                 return;
             }
-            programStack.pushStack(instr.immediate.value());
+            programStack.pushStack(instr.value.value());
             break;
         case Instructions::ADD:
         case Instructions::SUB:
@@ -52,19 +53,19 @@ void Machine::executeInstr(Instruction const &instr) {
             programStack.popStack();
             break;
         case Instructions::JMP:
-            jump(instr.immediate.value());
+            jump(instr.idx.value());
             break;
         case Instructions::JIF:
-            jumpOnTrue(instr.immediate.value());
+            jumpOnTrue(instr.idx.value());
             break;
         case Instructions::LOAD:
-            loadVar(instr.immediate.value());
+            loadVar(instr.idx.value());
             break;
         case Instructions::STORE:
-            storeVar(instr.immediate.value());
+            storeVar(instr.idx.value());
             break;
         case Instructions::CALL:
-            callFunction(instr.immediate.value());
+            callFunction(instr.idx.value());
             break;
         case Instructions::RET:
             returnFromFunction();
@@ -73,19 +74,19 @@ void Machine::executeInstr(Instruction const &instr) {
             notInstr();
             break;
         case Instructions::NEW_LIST:
-            newList(instr.immediate.value());
+            newList(instr.idx.value());
             break;
         case Instructions::PUSH_LIST:
-            pushList(instr.immediate.value());
+            pushList(instr.idx.value());
             break;
         case Instructions::LEN_LIST:
-            getLenList(instr.immediate.value());
+            getLenList(instr.idx.value());
             break;
         case Instructions::SET_ELM_LIST:
-            setElemList(instr.immediate.value());
+            setElemList(instr.idx.value());
             break;
         case Instructions::GET_ELM_LIST:
-            getElemAt(instr.immediate.value());
+            getElemAt(instr.idx.value());
             break;
     }
 }
@@ -166,8 +167,8 @@ void Machine::notInstr() {
 
 
 void Machine::binary(Instructions::Opcode const &opcode) {
-    long n2 = programStack.popStack();
-    long n1 = programStack.popStack();
+    auto n2 = programStack.popStack();
+    auto n1 = programStack.popStack();
     switch (opcode) {
         case Instructions::ADD:
             programStack.pushStack(n1 + n2);

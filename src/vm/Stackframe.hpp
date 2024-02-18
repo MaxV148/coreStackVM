@@ -5,15 +5,17 @@
 
 #include <map>
 
+#include "CSObject.hpp"
+
 using std::map;
 
 class Stackframe {
-    map<int,long>  variables{};
+    map<int,CSObject>  variables{};
     int returnAddress{};
 public:
     explicit Stackframe(int returnAddress);
-    long getVariable(int varNumber);
-    void setVariable(int varNumber, long value);
+    CSObject getVariable(int varNumber);
+    void setVariable(int varNumber, CSObject value);
     int getReturnAddress()const;
 };
 

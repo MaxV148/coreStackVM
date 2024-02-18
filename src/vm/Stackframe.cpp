@@ -7,11 +7,11 @@
 
 Stackframe::Stackframe(int returnAddress): returnAddress(returnAddress){};
 
-long Stackframe::getVariable(int varNumber) {
+CSObject Stackframe::getVariable(int varNumber) {
     return variables.at(varNumber);
 }
 
-void Stackframe::setVariable(int varNumber,long value) {
+void Stackframe::setVariable(int varNumber,CSObject value) {
     variables[varNumber] = value;
 }
 

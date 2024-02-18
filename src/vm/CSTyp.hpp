@@ -8,49 +8,135 @@
 #include "CSObject.hpp"
 #include <string>
 #include <utility>
+#include <vector>
+#include "memory"
 #include <boost/multiprecision/cpp_int.hpp>
+
 using boost::multiprecision::cpp_int;
 
 using std::string;
+using std::vector;
 
-typedef cpp_int CSBigInt;
-
-template<typename T>
-class CSTyp : public CSObject {
-    virtual T const getValue() = 0;
-};
+namespace CSTypes {
 
 
+    class CSInteger : public CSObject {
+        cpp_int value;
+    public:
+        explicit CSInteger(cpp_int value) : value(std::move(value)) {}
 
-class CSInteger : public CSTyp<CSBigInt> {
-    CSBigInt value;
-public:
-    explicit CSInteger(CSBigInt value) : value(std::move(value)) {}
 
-    CSBigInt const getValue() override {
-        return value;
-    }
-};
+        [[nodiscard]] std::string toString() const {
+            return value.str();
+        }
 
-class CSDouble : public CSTyp<double> {
-    double value;
-public:
-    explicit CSDouble(double value) : value(value) {}
 
-    double const getValue() override {
-        return value;
-    }
-};
+        friend CSInteger operator+(const CSInteger &lhs, const CSInteger &rhs) {
+            return CSInteger(lhs.value + rhs.value);
+        }
 
-class CSString : public CSTyp<string> {
-    string const value;
-public:
-    explicit CSString(string  str) : value(std::move(str)) {}
+        friend CSInteger operator-(const CSInteger &lhs, const CSInteger &rhs) {
+            return CSInteger(lhs.value - rhs.value);
+        }
 
-    string const getValue() override {
-        return value;
-    }
-};
+        friend CSInteger operator*(const CSInteger &lhs, const CSInteger &rhs) {
+            return CSInteger(lhs.value * rhs.value);
+        }
+
+        friend CSInteger operator/(const CSInteger &lhs, const CSInteger &rhs) {
+            return CSInteger(lhs.value / rhs.value);
+        }
+
+        friend CSInteger operator%(const CSInteger &lhs, const CSInteger &rhs) {
+            return CSInteger(lhs.value % rhs.value);
+        }
+        friend bool operator<(const CSInteger &lhs, const CSInteger &rhs) {
+            return lhs.value < rhs.value;
+        }
+
+        friend bool operator<=(const CSInteger &lhs, const CSInteger &rhs) {
+            return lhs.value <= rhs.value;
+        }
+
+        friend bool operator>(const CSInteger &lhs, const CSInteger &rhs) {
+            return lhs.value > rhs.value;
+        }
+        friend bool operator>=(const CSInteger &lhs, const CSInteger &rhs) {
+            return lhs.value >= rhs.value;
+        }
+
+        friend bool operator==(const CSInteger &lhs, const CSInteger &rhs) {
+            return lhs.value == rhs.value;
+        }
+    };
+
+    class CSDouble : public CSObject {
+        double value;
+    public:
+        explicit CSDouble(double value) : value(value) {}
+
+
+
+        friend CSDouble operator+(const CSDouble &lhs, const CSDouble &rhs) {
+            return CSDouble(lhs.value + rhs.value);
+        }
+
+        friend CSDouble operator-(const CSDouble &lhs, const CSDouble &rhs) {
+            return CSDouble(lhs.value - rhs.value);
+        }
+
+        friend CSDouble operator*(const CSDouble &lhs, const CSDouble &rhs) {
+            return CSDouble(lhs.value * rhs.value);
+        }
+
+        friend CSDouble operator/(const CSDouble &lhs, const CSDouble &rhs) {
+            return CSDouble(lhs.value / rhs.value);
+        }
+
+        friend bool operator<(const CSDouble &lhs, const CSDouble &rhs) {
+            return lhs.value < rhs.value;
+        }
+
+        friend bool operator<=(const CSDouble &lhs, const CSDouble &rhs) {
+            return lhs.value <= rhs.value;
+        }
+
+        friend bool operator>(const CSDouble &lhs, const CSDouble &rhs) {
+            return lhs.value > rhs.value;
+        }
+
+        friend bool operator>=(const CSDouble &lhs, const CSDouble &rhs) {
+            return lhs.value >= rhs.value;
+        }
+
+        friend bool operator==(const CSDouble &lhs, const CSDouble &rhs) {
+            return lhs.value == rhs.value;
+        }
+
+
+    };
+
+    class CSString : public CSObject {
+        string const value;
+    public:
+        explicit CSString(string str) : value(std::move(str)) {}
+
+
+        friend bool operator==(const CSString &lhs, const CSString &rhs) {
+            return lhs.value == rhs.value;
+        }
+        friend CSString operator+(const CSString &lhs, const CSString &rhs){
+            return CSString(lhs.value+rhs.value);
+        }
+    };
+
+    class CSStruct {
+        const vector<CSObject> structMember;
+    public:
+        explicit CSStruct(vector<CSObject> member) : structMember(std::move(member)) {}
+    };
+
+}
 
 
 #endif //STACKVM_CSTYP_HPP
