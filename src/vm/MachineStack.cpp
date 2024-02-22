@@ -1,20 +1,19 @@
 
 #include "MachineStack.hpp"
+#include <memory>
+#include "CSTyp.hpp"
+using std::unique_ptr;
+using CSTypes::CSObject;
 
 MachineStack::MachineStack() = default;
 
-CSObject* MachineStack::popStack() {
-    auto val = stack.top();
+unique_ptr<CSObject>MachineStack::popStack() {
+    auto val = std::move(stack.top());
     stack.pop();
     return val;
 }
 
-void MachineStack::pushStack(CSObject* value) {
-    stack.push(value);
+void MachineStack::pushStack(unique_ptr<CSObject> value) {
+    stack.push(std::move(value));
 }
 
-void MachineStack::dupStack() {
-    auto val = popStack();
-    pushStack(val);
-    pushStack(val);
-}

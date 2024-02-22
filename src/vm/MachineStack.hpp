@@ -5,18 +5,18 @@
 #ifndef CMAKE_BOOST_DEMO_MACHINESTACK_HPP
 #define CMAKE_BOOST_DEMO_MACHINESTACK_HPP
 #include <stack>
+#include <memory>
 #include "../util/Instructions.hpp"
 
-using std::stack; using Instructions::Instruction;
+using std::stack; using Instructions::Instruction; using std::unique_ptr;
 
 
 class MachineStack {
-    stack<CSObject*> stack{};
+    stack<unique_ptr<CSObject>> stack{};
 public:
     explicit MachineStack();
-    CSObject* popStack();
-    void pushStack(CSObject* value);
-    void dupStack();
+    unique_ptr<CSObject> popStack();
+    void pushStack(unique_ptr<CSObject> value);
 };
 
 #endif //CMAKE_BOOST_DEMO_MACHINESTACK_HPP

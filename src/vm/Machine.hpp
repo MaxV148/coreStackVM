@@ -7,12 +7,14 @@
 #include <vector>
 #include <unordered_map>
 #include <stack>
+#include "CSTyp.hpp"
 #include "../util/Instructions.hpp"
 #include "./Stackframe.hpp"
 #include "MachineStack.hpp"
 #include "VMList.hpp"
 
 using std::vector; using std::stack; using Instructions::Instruction; using Instructions::Opcode; using std::unordered_map;
+using CSTypes::CSObject;
 
 class Machine {
     const vector<Instruction> programVec{};
@@ -51,7 +53,7 @@ public:
     Instruction nextInst();
 
     //only for testing
-    long popLast();
+    unique_ptr<CSObject> popLast();
 };
 
 

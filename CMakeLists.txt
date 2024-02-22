@@ -39,8 +39,6 @@ set(SOURCE_FILES src/main.cpp ${INC_FILES} ${SRC_FILES}
         src/vm/VMList.hpp
         src/vm/VMClass.cpp
         src/vm/VMClass.hpp
-        src/vm/CSObject.cpp
-        src/vm/CSObject.hpp
         src/vm/CSTyp.cpp
         src/vm/CSTyp.hpp
         "../../../Library/Application Support/JetBrains/CLion2023.3/scratches/Test.cpp"

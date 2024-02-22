@@ -5,7 +5,7 @@
 #ifndef STACKVM_CSTYP_HPP
 #define STACKVM_CSTYP_HPP
 
-#include "CSObject.hpp"
+
 #include <string>
 #include <utility>
 #include <vector>
@@ -17,57 +17,20 @@ using boost::multiprecision::cpp_int;
 using std::string;
 using std::vector;
 
-namespace CSTypes {
+namespace Typing {
 
 
-    class CSInteger : public CSObject {
-        cpp_int value;
+    enum CSTypes{
+        Double,
+        Int,
+        String
+    };
+
+    class CSObject {
     public:
-        explicit CSInteger(cpp_int value) : value(std::move(value)) {}
+        virtual ~CSObject() = default;
+        virtual CSTypes getType() = 0;
 
-
-        [[nodiscard]] std::string toString() const {
-            return value.str();
-        }
-
-
-        friend CSInteger operator+(const CSInteger &lhs, const CSInteger &rhs) {
-            return CSInteger(lhs.value + rhs.value);
-        }
-
-        friend CSInteger operator-(const CSInteger &lhs, const CSInteger &rhs) {
-            return CSInteger(lhs.value - rhs.value);
-        }
-
-        friend CSInteger operator*(const CSInteger &lhs, const CSInteger &rhs) {
-            return CSInteger(lhs.value * rhs.value);
-        }
-
-        friend CSInteger operator/(const CSInteger &lhs, const CSInteger &rhs) {
-            return CSInteger(lhs.value / rhs.value);
-        }
-
-        friend CSInteger operator%(const CSInteger &lhs, const CSInteger &rhs) {
-            return CSInteger(lhs.value % rhs.value);
-        }
-        friend bool operator<(const CSInteger &lhs, const CSInteger &rhs) {
-            return lhs.value < rhs.value;
-        }
-
-        friend bool operator<=(const CSInteger &lhs, const CSInteger &rhs) {
-            return lhs.value <= rhs.value;
-        }
-
-        friend bool operator>(const CSInteger &lhs, const CSInteger &rhs) {
-            return lhs.value > rhs.value;
-        }
-        friend bool operator>=(const CSInteger &lhs, const CSInteger &rhs) {
-            return lhs.value >= rhs.value;
-        }
-
-        friend bool operator==(const CSInteger &lhs, const CSInteger &rhs) {
-            return lhs.value == rhs.value;
-        }
     };
 
     class CSDouble : public CSObject {
@@ -75,7 +38,9 @@ namespace CSTypes {
     public:
         explicit CSDouble(double value) : value(value) {}
 
-
+        CSTypes getType() override{
+            return CSTypes::Double;
+        }
 
         friend CSDouble operator+(const CSDouble &lhs, const CSDouble &rhs) {
             return CSDouble(lhs.value + rhs.value);
@@ -112,6 +77,11 @@ namespace CSTypes {
         friend bool operator==(const CSDouble &lhs, const CSDouble &rhs) {
             return lhs.value == rhs.value;
         }
+        friend std::ostream& operator<<(std::ostream& os ,const CSDouble &obj){
+            std::cout << obj.value << std::endl;
+            return os;
+
+        }
 
 
     };
@@ -121,6 +91,9 @@ namespace CSTypes {
     public:
         explicit CSString(string str) : value(std::move(str)) {}
 
+        CSTypes getType() override{
+            return CSTypes::String;
+        }
 
         friend bool operator==(const CSString &lhs, const CSString &rhs) {
             return lhs.value == rhs.value;
@@ -128,6 +101,8 @@ namespace CSTypes {
         friend CSString operator+(const CSString &lhs, const CSString &rhs){
             return CSString(lhs.value+rhs.value);
         }
+
+
     };
 
     class CSStruct {

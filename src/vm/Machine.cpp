@@ -8,6 +8,10 @@
 
 using std::cout;
 using std::endl;
+using Typing::CSObject;
+using Typing::CSTypes;
+
+
 
 Machine::Machine(vector<Instructions::Instruction*> const &instructions) : programVec(instructions), programStack() {
     frames.push(Stackframe{0});//initial Stackframe
@@ -47,7 +51,7 @@ void Machine::executeInstr(Instruction const &instr) {
             binary(opcode);
             break;
         case Instructions::DUP:
-            programStack.dupStack();
+            //TODO: implement DUP
             break;
         case Instructions::POP:
             programStack.popStack();
@@ -121,15 +125,18 @@ unsigned long Machine::valueIp() const {
     return ip;
 }
 
-long Machine::popLast() {
-    return programStack.popStack();
+unique_ptr<CSObject> Machine::popLast() {
+    return std::move(programStack.popStack());
 }
 
 void Machine::jumpOnTrue(long imm) {
     auto val = programStack.popStack();
-    if (val == 1) {
-        ip = imm;
+    if(val->getType() == CSTypes::Double){
+        if (val == 1) {
+            ip = imm;
+        }
     }
+
 }
 
 void Machine::loadVar(long imm) {
